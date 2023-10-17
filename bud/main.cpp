@@ -5,6 +5,7 @@
 // TODO: Has to check if space will be "occupied"
 void check_max_free_spaces(const std::vector<std::string> &airport, const unsigned int n, const unsigned int m, int &max_free_spaces, int &second_max_free_spaces)
 {
+  std::vector<std::vector<bool>> checked(n, std::vector<bool>(n, false)); // create a 2D vector to keep track of checked fields
 
   // Sprawdzanie maksymalnej liczby wolnych miejsc w kolumnie
   for (int i = 0; i < n; i++)
@@ -13,10 +14,11 @@ void check_max_free_spaces(const std::vector<std::string> &airport, const unsign
     int max_sequence = 0;
     for (int j = 0; j < n; j++)
     {
-      if (airport[i][j] == '.')
+      if (airport[i][j] == '.' && !checked[i][j]) // check if the field is empty and not checked
       {
         free_spaces++;
         max_sequence = std::max(max_sequence, free_spaces);
+        checked[i][j] = true; // mark the field as checked
       }
       else
       {
@@ -41,10 +43,11 @@ void check_max_free_spaces(const std::vector<std::string> &airport, const unsign
     int max_sequence = 0;
     for (int j = 0; j < n; j++)
     {
-      if (airport[j][i] == '.')
+      if (airport[j][i] == '.' && !checked[j][i]) // check if the field is empty and not checked
       {
         free_spaces++;
         max_sequence = std::max(max_sequence, free_spaces);
+        checked[j][i] = true; // mark the field as checked
       }
       else
       {
@@ -73,7 +76,7 @@ int main(void)
   unsigned int m = 0;
 
   std::vector<std::string> airport;
-  airport.reserve(n);
+  // airport.reserve(n);
 
   // ========================================
   //           Wczytywanie danych
@@ -110,10 +113,21 @@ int main(void)
   // PRZYKŁAD III
   n = 2;
   m = 2;
-  airport.push_back("..");
+  airport.push_back(".X");
   airport.push_back("..");
   // OCZEKIWANY OUTPUT: 1
-  // NIE DZIAŁA
+  // DZIAŁA
+
+  // PRZYKŁAD IV
+  // n = 10;
+  // m = 2;
+  // for (int i = i; i < n; i++)
+  // {
+  //   airport.push_back("..........");
+  // }
+  // airport[5] = "..........";
+  // OCZEKIWANY OUTPUT: 1
+  // DZIAŁA
 
   // ========================================
   //                 Algorytm
