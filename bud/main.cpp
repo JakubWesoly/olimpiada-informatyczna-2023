@@ -5,6 +5,7 @@
 // TODO: Has to check if space will be "occupied"
 void check_max_free_spaces(const std::vector<std::string> &airport, const unsigned int n, const unsigned int m, int &max_free_spaces, int &second_max_free_spaces)
 {
+
   // Sprawdzanie maksymalnej liczby wolnych miejsc w kolumnie
   for (int i = 0; i < n; i++)
   {
@@ -101,22 +102,16 @@ int main(void)
   // PRZYKŁAD II
   // n = 2;
   // m = 1;
-  // airport.push_back(".....");
-  // airport.push_back(".....");
-  // airport.push_back(".....");
-  // airport.push_back(".....");
-  // airport.push_back(".....");
+  // airport.push_back("..");
+  // airport.push_back("..");
   // OCZEKIWANY OUTPUT: 2
   // DZIAŁA
 
   // PRZYKŁAD III
   n = 2;
   m = 2;
-  airport.push_back(".....");
-  airport.push_back(".....");
-  airport.push_back(".....");
-  airport.push_back(".....");
-  airport.push_back(".....");
+  airport.push_back("..");
+  airport.push_back("..");
   // OCZEKIWANY OUTPUT: 1
   // NIE DZIAŁA
 
