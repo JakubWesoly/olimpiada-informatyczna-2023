@@ -2,68 +2,29 @@
 #include <vector>
 #include <string>
 
-// TODO: Has to check if space will be "occupied"
-void check_max_free_spaces(const std::vector<std::string> &airport, const unsigned int n, const unsigned int m, int &max_free_spaces, int &second_max_free_spaces)
+std::vector<std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>>> get_possible_free_spaces(const std::vector<std::string> &airport, int n)
 {
-  std::vector<std::vector<bool>> checked(n, std::vector<bool>(n, false)); // create a 2D vector to keep track of checked fields
-
-  // Sprawdzanie maksymalnej liczby wolnych miejsc w kolumnie
-  for (int i = 0; i < n; i++)
+  std::vector<std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>>> possible_free_spaces{};
+  std::pair<size_t, size_t> begin = {0, 0};
+  for (size_t i = 0; i < n; i++)
   {
-    int free_spaces = 0;
-    int max_sequence = 0;
-    for (int j = 0; j < n; j++)
+    for (size_t j = 1; j < n; j++)
     {
-      if (airport[i][j] == '.' && !checked[i][j]) // check if the field is empty and not checked
+      if (airport[i][j] != '.' && airport[i][j - 1] == '.')
       {
-        free_spaces++;
-        max_sequence = std::max(max_sequence, free_spaces);
-        checked[i][j] = true; // mark the field as checked
-      }
-      else
-      {
-        free_spaces = 0;
+        possible_free_spaces.push_back({begin, {i, j - 1}});
+        begin = {i, j + 1};
+        j++;
       }
     }
-    if (max_sequence > max_free_spaces)
-    {
-      second_max_free_spaces = max_free_spaces;
-      max_free_spaces = max_sequence;
-    }
-    else if (max_sequence > second_max_free_spaces)
-    {
-      second_max_free_spaces = max_sequence;
-    }
-  }
 
-  // Sprawdzanie maksymalnej liczby wolnych miejsc w wierszu
-  for (int i = 0; i < n; i++)
-  {
-    int free_spaces = 0;
-    int max_sequence = 0;
-    for (int j = 0; j < n; j++)
+    if (airport[i][n - 1] == '.')
     {
-      if (airport[j][i] == '.' && !checked[j][i]) // check if the field is empty and not checked
-      {
-        free_spaces++;
-        max_sequence = std::max(max_sequence, free_spaces);
-        checked[j][i] = true; // mark the field as checked
-      }
-      else
-      {
-        free_spaces = 0;
-      }
+      possible_free_spaces.push_back({begin, {i, n - 1}});
     }
-    if (max_sequence > max_free_spaces)
-    {
-      second_max_free_spaces = max_free_spaces;
-      max_free_spaces = max_sequence;
-    }
-    else if (max_sequence > second_max_free_spaces)
-    {
-      second_max_free_spaces = max_sequence;
-    }
+    begin = {i + 1, 0};
   }
+  return possible_free_spaces;
 }
 
 int main(void)
@@ -92,13 +53,13 @@ int main(void)
   // }
 
   // PRZYKŁAD I
-  // n = 5;
-  // m = 2;
-  // airport.push_back(".X...");
-  // airport.push_back(".XXXX");
-  // airport.push_back("XX...");
-  // airport.push_back(".....");
-  // airport.push_back(".X.X.");
+  n = 5;
+  m = 2;
+  airport.push_back(".X...");
+  airport.push_back(".XXXX");
+  airport.push_back("XX...");
+  airport.push_back(".....");
+  airport.push_back(".X.X.");
   // OCZEKIWANY OUTPUT: 3
   // DZIAŁA
 
@@ -111,10 +72,10 @@ int main(void)
   // DZIAŁA
 
   // PRZYKŁAD III
-  n = 2;
-  m = 2;
-  airport.push_back(".X");
-  airport.push_back("..");
+  // n = 2;
+  // m = 2;
+  // airport.push_back(".X");
+  // airport.push_back("..");
   // OCZEKIWANY OUTPUT: 1
   // DZIAŁA
 
@@ -132,20 +93,11 @@ int main(void)
   // ========================================
   //                 Algorytm
   // ========================================
+  auto free_spaces = get_possible_free_spaces(airport, n);
 
-  int max_free_spaces = 0;
-  int second_max_free_spaces = 0;
-
-  check_max_free_spaces(airport, n, m, max_free_spaces, second_max_free_spaces);
-
-  if (m == 1)
+  for (auto spaces : free_spaces)
   {
-    std::cout << max_free_spaces << std::endl;
+    std::cout << "{[" << spaces.first.first << ", " << spaces.first.second << "], [" << spaces.second.first << ", " << spaces.second.second << "]}\n";
   }
-  else
-  {
-    std::cout << second_max_free_spaces << std::endl;
-  }
-
   return 0;
 }
