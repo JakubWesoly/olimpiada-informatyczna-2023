@@ -126,10 +126,10 @@ std::vector<int> calculate_vertical_lengths(const std::vector<std::pair<Point, P
   return lengths;
 }
 
-void print_point(const Point &p)
-{
-  std::cout << "[" << p.x << ", " << p.y << "]\n";
-}
+// void print_point(const Point &p)
+// {
+//   std::cout << "[" << p.x << ", " << p.y << "]\n";
+// }
 
 int main(void)
 {
@@ -141,20 +141,20 @@ int main(void)
   unsigned int m = 0;
 
   std::vector<std::string> airport;
-  // airport.reserve(n);
+  airport.reserve(n);
 
   // ========================================
   //           Wczytywanie danych
   // ========================================
-  // std::ios_base::sync_with_stdio(0);
-  // std::cin >> n >> m;
+  std::ios_base::sync_with_stdio(0);
+  std::cin >> n >> m;
 
-  // for (int i = 0; i < n; i++)
-  // {
-  //   std::string line;
-  //   std::cin >> line;
-  //   airport.push_back(line);
-  // }
+  for (int i = 0; i < n; i++)
+  {
+    std::string line;
+    std::cin >> line;
+    airport.push_back(line);
+  }
 
   // PRZYKŁAD I
   // n = 5;
@@ -232,25 +232,35 @@ int main(void)
 
   for (auto h_length : horizontal_lengths)
   {
-    if (h_length > longest_horizontal)
+    if (h_length >= longest_horizontal)
     {
       second_longest_horizontal = longest_horizontal;
       longest_horizontal = h_length;
     }
+    else if (h_length >= second_longest_horizontal)
+    {
+      second_longest_horizontal = h_length;
+    }
   }
 
-  if (second_longest_horizontal > max)
+  if (second_longest_horizontal >= max)
     max = second_longest_horizontal;
 
   size_t longest_vertical = 0;
   size_t second_longest_vertical = 0;
 
+  // std::cout << "DLUGOSCI PIONOWE: ";
   for (auto v_length : vertical_lengths)
   {
-    if (v_length > longest_vertical)
+    // std::cout << v_length << ", ";
+    if (v_length >= longest_vertical)
     {
       second_longest_vertical = longest_vertical;
       longest_vertical = v_length;
+    }
+    else if (v_length >= second_longest_vertical)
+    {
+      second_longest_vertical = v_length;
     }
   }
 
@@ -272,9 +282,9 @@ int main(void)
       auto &current_horizontal = horizontal_spaces[horizontal_iterator];
       auto &current_vertical = vertical_spaces[vertical_iterator];
 
-      std::cout << "ITERATION RESULTS: \n";
-      print_point_pair(current_horizontal);
-      print_point_pair(current_vertical);
+      // std::cout << "ITERATION RESULTS: \n";
+      // print_point_pair(current_horizontal);
+      // print_point_pair(current_vertical);
 
       if (vertical_lengths[vertical_iterator] / 2 > max)
         max = vertical_lengths[vertical_iterator] / 2;
@@ -288,9 +298,9 @@ int main(void)
         if (smaller_length > max)
           max = smaller_length;
 
-        std::cout << "BRAK KOLIZJI\n";
-        std::cout << "MAX: " << max << "\n";
-        std::cout << "\n";
+        // std::cout << "BRAK KOLIZJI\n";
+        // std::cout << "MAX: " << max << "\n";
+        // std::cout << "\n";
 
         continue;
       }
@@ -341,9 +351,9 @@ int main(void)
 
       int biggest_combo = std::max(calculate_horizontal_length(current_horizontal) + bigger_vertical, calculate_vertical_length(current_vertical) + bigger_horizontal);
 
-      std::cout
-          << "MAX: " << max << "\n";
-      std::cout << "\n";
+      // std::cout
+      //     << "MAX: " << max << "\n";
+      // std::cout << "\n";
     }
   }
 
